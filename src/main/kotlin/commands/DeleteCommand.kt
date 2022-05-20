@@ -4,7 +4,6 @@ import utils.PrintTypesEnum
 
 class DeleteCommand() : SealedCommand() {
 
-
     override val name = "delete"
     override val help = "This command Deletes"
 

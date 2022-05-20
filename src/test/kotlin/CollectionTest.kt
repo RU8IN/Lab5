@@ -1,6 +1,6 @@
 import kotlin.test.Test
 
-internal class kotlintesttkalsdfkapstest() {
+internal class CollectionTest() {
 
     @Test
     fun prikol() {

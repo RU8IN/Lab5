@@ -1,4 +1,4 @@
 package exceptions
 
-class idNotSetException: RuntimeException("Ты пидор") {
+class idNotSetException: RuntimeException("ID must be set") {
 }

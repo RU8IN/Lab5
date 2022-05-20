@@ -5,22 +5,24 @@ import kotlin.reflect.KProperty1
 
 interface AbstractHumanCollection : Iterable<HumanBeing> {
 
-    fun delete(id: Int)
-    fun edit(id: Int, humanBeing: HumanBeing)
+    fun removeById(id: Long): Boolean
+    fun update(id: Long, humanBeing: HumanBeing): Boolean
     fun sorted(): List<HumanBeing>
-    fun removeFirst(): HumanBeing
-    fun addIfMax(humanBeing: HumanBeing)
+    fun addIfMax(humanBeing: HumanBeing): Boolean
     fun removeLower(humanBeing: HumanBeing)
-    fun removeAnyByImpactSeed(impactSpeed: Int)
+    fun removeAnyByImpactSeed(impactSpeed: Long)
     fun filterContainsSoundtrackName(soundtrackName: String): List<HumanBeing>
-    fun filterByDescendingMood(): List<HumanBeing>
+    fun getById(id: Long): HumanBeing?
+    fun add(humanBeing: HumanBeing): Boolean
+    fun getInfo(): String
 }
 
 
-fun<T> AbstractHumanCollection.filterBy(
+fun <T> AbstractHumanCollection.filterBy(
     getter: KProperty1<HumanBeing, T>,
     comparator: (T, T) -> Int
 ): List<HumanBeing> {
+
     val list = this.toMutableList()
 
     for (i in list.indices) {
