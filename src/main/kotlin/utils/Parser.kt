@@ -1,5 +1,8 @@
 package utils
 
-class Parser {
+class Parser(): ParserInterface{
+    override fun parse(string: String) {
+        TODO("Not yet implemented")
+    }
 
 }

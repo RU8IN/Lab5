@@ -5,7 +5,6 @@ import exceptions.idNotSetException
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-
 @Serializable
 data class HumanBeing(
     val name: String,
