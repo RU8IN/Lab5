@@ -1,7 +1,7 @@
 package storage
 
 import driver.HumanBeing
-import exceptions.noHumanBeingWithSuchIdException
+import exceptions.NoHumanBeingWithSuchIdException
 import java.time.LocalDate
 import java.util.ArrayDeque
 
@@ -11,31 +11,30 @@ class LocalHumanCollection : AbstractHumanCollection {
     private val arrayDeque = ArrayDeque<HumanBeing>()
 
 
-    override fun removeById(id: Long): Boolean {
+    override fun removeById(id: Long) {
         val iter = arrayDeque.iterator()
         for (el in iter) {
             if (el.id == id) {
                 iter.remove()
-                return true
+                return
             }
         }
-        throw noHumanBeingWithSuchIdException()
-
+        throw NoHumanBeingWithSuchIdException(id)
     }
 
-    override fun update(id: Long, humanBeing: HumanBeing): Boolean {
+    override fun update(id: Long, humanBeing: HumanBeing) {
         val iter = this.arrayDeque.iterator()
-
+        println(iter)
         for (el in iter) {
+            println(el.id)
+            println(id)
+            println(id == el.id)
             if (el.id == id) {
                 iter.remove()
                 this.add(humanBeing)
-                return true
-            } else if (!iter.hasNext()) {
-                throw noHumanBeingWithSuchIdException()
             }
         }
-        return false
+        throw NoHumanBeingWithSuchIdException(id)
     }
 
     override fun sorted(): List<HumanBeing> = this.arrayDeque.sorted()
@@ -76,23 +75,29 @@ class LocalHumanCollection : AbstractHumanCollection {
         return this.arrayDeque.filter { it.soundtrackName == soundtrackName }
     }
 
-    override fun getById(id: Long): HumanBeing {
-        return this.arrayDeque.find { it.id == id } ?: throw noHumanBeingWithSuchIdException()
+    override fun sortedByDescendingMood(): List<HumanBeing> {
+        return this.arrayDeque.sortedBy { it.mood }.reversed()
     }
 
-    override fun add(humanBeing: HumanBeing): Boolean {
+    override fun getById(id: Long): HumanBeing {
+        return this.arrayDeque.find { it.id == id } ?: throw NoHumanBeingWithSuchIdException(id)
+    }
+
+    override fun clear() {
+        this.arrayDeque.clear()
+    }
+
+    override fun add(humanBeing: HumanBeing) {
         humanBeing.id = getMaxIdInCollection() + 1
         this.arrayDeque.add(humanBeing)
-        return true
     }
 
     override fun getInfo(): String {
-        val info = """
+        return """
             Type: ${this::class} : ArrayDeque
             Initialization Date: $initializationDate
-            Size: ${this.arrayDeque.size}
+            Size: ${arrayDeque.size}
         """.trimIndent()
-        return info
     }
 
     private fun getMaxIdInCollection(): Long {
@@ -106,5 +111,9 @@ class LocalHumanCollection : AbstractHumanCollection {
 
     override fun toString(): String {
         return this.arrayDeque.toString()
+    }
+
+    override fun removeFirst() {
+        this.arrayDeque.removeFirst()
     }
 }

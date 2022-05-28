@@ -1,16 +1,14 @@
 package commands
 
+import storage.AbstractHumanCollection
+import utils.CommandAnnotation
 import utils.PrintTypesEnum
 
-class DeleteCommand() : SealedCommand() {
+@CommandAnnotation("delete", "This command Deletes")
+class DeleteCommand(private val id: Long) : SealedCommand {
 
-    override val name = "delete"
-    override val help = "This command Deletes"
-
-    override fun execute(): List<Pair<PrintTypesEnum, String>> {
-        println(name)
-        val list = mutableListOf<Pair<PrintTypesEnum, String>>()
-        return list
+    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+        collection.removeById(id)
+        return mutableListOf(Pair(PrintTypesEnum.INFO, "Object with id $id deleted successfully!"))
     }
-
 }

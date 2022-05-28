@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.6.10"
-    java
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "org.example"
@@ -13,7 +13,9 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     testImplementation(kotlin("test"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+    implementation(kotlin("reflect"))
 }
 
 tasks.getByName<Test>("test") {

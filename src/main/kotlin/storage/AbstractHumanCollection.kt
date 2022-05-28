@@ -5,16 +5,19 @@ import kotlin.reflect.KProperty1
 
 interface AbstractHumanCollection : Iterable<HumanBeing> {
 
-    fun removeById(id: Long): Boolean
-    fun update(id: Long, humanBeing: HumanBeing): Boolean
+    fun getInfo(): String
+    fun add(humanBeing: HumanBeing)
+    fun update(id: Long, humanBeing: HumanBeing)
+    fun removeById(id: Long)
     fun sorted(): List<HumanBeing>
     fun addIfMax(humanBeing: HumanBeing): Boolean
     fun removeLower(humanBeing: HumanBeing)
     fun removeAnyByImpactSeed(impactSpeed: Long)
     fun filterContainsSoundtrackName(soundtrackName: String): List<HumanBeing>
+    fun sortedByDescendingMood(): List<HumanBeing>
     fun getById(id: Long): HumanBeing?
-    fun add(humanBeing: HumanBeing): Boolean
-    fun getInfo(): String
+    fun clear()
+    fun removeFirst()
 }
 
 

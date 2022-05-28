@@ -1,21 +1,19 @@
 package commands
 
 import driver.HumanBeing
+import kotlinx.serialization.Serializable
 import storage.AbstractHumanCollection
+import utils.CommandAnnotation
 import utils.PrintTypesEnum
 
+@Serializable
+@CommandAnnotation("add", "This command adds object to deque")
+class AddCommand(private val humanBeing: HumanBeing) : SealedCommand {
 
-class AddCommand(private val humanBeing: HumanBeing, private val humanCollection: AbstractHumanCollection) : SealedCommand() {
-
-    override val name = "add"
-    override val help = "This command adds object to deque"
-
-    override fun execute(): List<Pair<PrintTypesEnum, String>> {
-
-        humanCollection.add(humanBeing)
-
+    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+        collection.add(humanBeing)
         val list = mutableListOf<Pair<PrintTypesEnum, String>>()
-        list.add(Pair(PrintTypesEnum.INFO, "Human has been added successfully!"))
+        list.add(Pair(PrintTypesEnum.INFO, "Human ${humanBeing.name} has been added successfully!"))
         return list
     }
 }

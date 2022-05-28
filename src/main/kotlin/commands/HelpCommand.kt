@@ -1,22 +1,20 @@
 package commands
 
+import storage.AbstractHumanCollection
 import utils.PrintTypesEnum
+import utils.CommandAnnotation
 
 
-class HelpCommand(private vararg val commands: SealedCommand) : SealedCommand() {
+@CommandAnnotation("help", "This command helps you with understanding other programs!")
+class HelpCommand() : SealedCommand {
 
-
-    override val name = "help"
-    override val help = "This command helps you with understanding other programs!"
-
-    override fun execute(): List<Pair<PrintTypesEnum, String>> {
-        val commandsList = mutableListOf<Pair<PrintTypesEnum, String>>()
-        for (command in commands) {
+    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+        val commandsHelpList = mutableListOf<Pair<PrintTypesEnum, String>>()
+        for (command in SealedCommand::class.sealedSubclasses) {
             val type = PrintTypesEnum.INFO
-            val helpString = command.help
-
-            commandsList.add(Pair(type, helpString))
+            val string = "${command.commandName} - ${command.commandHelp}"
+            commandsHelpList.add(Pair(type, string))
         }
-        return commandsList
+        return commandsHelpList
     }
 }
