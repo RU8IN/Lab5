@@ -1,6 +1,8 @@
 package utils
 
-class ConsoleLogger: Logger {
+
+
+object ConsoleLogger: Logger {
 
     override fun log(list: List<Pair<PrintTypesEnum, String>>) {
         for (el in list) {

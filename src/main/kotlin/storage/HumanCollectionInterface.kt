@@ -3,7 +3,7 @@ package storage
 import driver.HumanBeing
 import kotlin.reflect.KProperty1
 
-interface AbstractHumanCollection : Iterable<HumanBeing> {
+interface HumanCollectionInterface : Iterable<HumanBeing> {
 
     fun getInfo(): String
     fun add(humanBeing: HumanBeing)
@@ -21,7 +21,7 @@ interface AbstractHumanCollection : Iterable<HumanBeing> {
 }
 
 
-fun <T> AbstractHumanCollection.filterBy(
+fun <T> HumanCollectionInterface.filterBy(
     getter: KProperty1<HumanBeing, T>,
     comparator: (T, T) -> Int
 ): List<HumanBeing> {

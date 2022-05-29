@@ -1,35 +1,32 @@
 package utils
 
-import com.sun.jmx.remote.internal.ArrayQueue
-import commands.HelpCommand
-import commands.SealedCommand
-import storage.AbstractHumanCollection
-import java.util.*
-import kotlin.collections.ArrayDeque
-import kotlin.properties.Delegates
+import storage.HumanCollectionInterface
 
 
 class ConsoleApplication(
     private val parser: ParserInterface,
     private val logger: Logger,
-    private val collection: AbstractHumanCollection
+    private val collection: HumanCollectionInterface
 ) {
 
-    private var lastExecutedCommands = ArrayQueue<SealedCommand>(10)
 
     fun run() {
-        var currentCommand: SealedCommand by Delegates.observable(HelpCommand()) { _, _, new ->
-            lastExecutedCommands.add(new)
-        }
+        logger.log(PrintTypesEnum.INFO to "Ryan Gosling Maker 1.0")
         while (true) {
-            currentCommand = parser.parse(readln())
-            logger.log(currentCommand.execute(collection))
+            try {
+                val currentCommand = parser.parse(readln())
+                logger.log(currentCommand.execute(collection))
+            }
+            catch(e: IllegalArgumentException) {
+                logger.log(PrintTypesEnum.WARNING to "Wrong argument type")
+            }
+            catch (e: RuntimeException) {
+                logger.log(PrintTypesEnum.WARNING to e.message.toString())
+            }
+            catch (e: Exception) {
+                logger.log(PrintTypesEnum.WARNING to e.toString())
+            }
         }
     }
-
-    fun getLastCommands(): List<SealedCommand> {
-        return lastExecutedCommands
-    }
-
 
 }

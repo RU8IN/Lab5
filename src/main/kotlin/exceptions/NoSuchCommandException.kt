@@ -1,4 +1,4 @@
 package exceptions
 
-class NoSuchCommandException: RuntimeException("NoSuchCommandException") {
+class NoSuchCommandException: RuntimeException("I don't know such command") {
 }

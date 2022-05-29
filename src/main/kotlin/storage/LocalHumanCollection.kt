@@ -1,15 +1,18 @@
 package storage
 
 import driver.HumanBeing
+import exceptions.CollectionIsEmptyException
 import exceptions.NoHumanBeingWithSuchIdException
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.serialization.KSerializer
 import java.util.ArrayDeque
 
-class LocalHumanCollection : AbstractHumanCollection {
+@kotlinx.serialization.Serializable
+object LocalHumanCollection : HumanCollectionInterface {
 
-    private val initializationDate: LocalDate = LocalDate.now()
-    private val arrayDeque = ArrayDeque<HumanBeing>()
-
+    private val initializationDate: Instant = Clock.System.now()
+    private val arrayDeque: ArrayDeque<HumanBeing> = ArrayDeque<HumanBeing>()
 
     override fun removeById(id: Long) {
         val iter = arrayDeque.iterator()
@@ -26,12 +29,10 @@ class LocalHumanCollection : AbstractHumanCollection {
         val iter = this.arrayDeque.iterator()
         println(iter)
         for (el in iter) {
-            println(el.id)
-            println(id)
-            println(id == el.id)
             if (el.id == id) {
                 iter.remove()
                 this.add(humanBeing)
+                return
             }
         }
         throw NoHumanBeingWithSuchIdException(id)
@@ -84,6 +85,7 @@ class LocalHumanCollection : AbstractHumanCollection {
     }
 
     override fun clear() {
+        if (this.arrayDeque.isEmpty()) throw CollectionIsEmptyException()
         this.arrayDeque.clear()
     }
 
@@ -113,7 +115,17 @@ class LocalHumanCollection : AbstractHumanCollection {
         return this.arrayDeque.toString()
     }
 
+    fun toList(): List<HumanBeing> {
+        val list = mutableListOf<HumanBeing>()
+        this.arrayDeque.forEach { list.add(it) }
+        return list
+    }
+
+
     override fun removeFirst() {
+        if (this.arrayDeque.isEmpty()) throw CollectionIsEmptyException()
         this.arrayDeque.removeFirst()
     }
+
 }
+

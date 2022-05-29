@@ -1,14 +1,14 @@
 package commands
 
 import exceptions.NoAnnotationError
-import storage.AbstractHumanCollection
+import storage.HumanCollectionInterface
 import utils.CommandAnnotation
 import utils.PrintTypesEnum
 import kotlin.reflect.KClass
 
 sealed interface SealedCommand{
 
-    abstract fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>>
+    abstract fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>>
 
 }
 

@@ -1,14 +1,14 @@
 package commands
 
-import storage.AbstractHumanCollection
+import storage.HumanCollectionInterface
 import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
-
+@kotlinx.serialization.Serializable
 @CommandAnnotation("remove_first", "Removes first element in collection")
 class RemoveFirstCommand() : SealedCommand {
 
-    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+    override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.removeFirst()
         return listOf(Pair(PrintTypesEnum.INFO, "First element removed"))
     }

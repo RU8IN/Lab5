@@ -1,16 +1,15 @@
 package commands
 
-import driver.HumanBeing
 import kotlinx.serialization.Serializable
-import storage.AbstractHumanCollection
+import storage.HumanCollectionInterface
 import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
 @Serializable
 @CommandAnnotation("clear", "Clears collection")
-object ClearCommand : SealedCommand {
+class ClearCommand : SealedCommand {
 
-    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+    override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.clear()
         return mutableListOf(Pair(PrintTypesEnum.INFO, "Collection cleared"))
     }

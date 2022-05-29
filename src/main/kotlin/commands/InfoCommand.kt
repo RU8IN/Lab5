@@ -1,15 +1,14 @@
 package commands
 
-import storage.AbstractHumanCollection
+import storage.HumanCollectionInterface
 import utils.PrintTypesEnum
 import utils.CommandAnnotation
-import kotlin.reflect.full.declaredMemberProperties
 
-
+@kotlinx.serialization.Serializable
 @CommandAnnotation("info", "This command shows the type, initialization date and size of collection")
 class InfoCommand() : SealedCommand {
 
-    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+    override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         return listOf(Pair(PrintTypesEnum.INFO, collection.getInfo()))
     }
 }

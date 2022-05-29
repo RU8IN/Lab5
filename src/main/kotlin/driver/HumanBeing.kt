@@ -4,7 +4,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
-@Serializable(with=HumanBeingSerializer::class)
+@Serializable(with = HumanBeingSerializer::class)
 data class HumanBeing(
     val name: String,
     val coordinates: Coordinates,
@@ -15,9 +15,10 @@ data class HumanBeing(
     val minutesOfWaiting: Double,
     val mood: Mood,
     val car: Car
-    ) : Comparable<HumanBeing> {
+) : Comparable<HumanBeing> {
 
     val creationDate: Instant = Clock.System.now()
+
     var id: Long? = null
 
     override fun compareTo(other: HumanBeing): Int = this.impactSeed.compareTo(other.impactSeed)

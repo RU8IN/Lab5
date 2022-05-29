@@ -2,7 +2,7 @@ package commands
 
 import driver.HumanBeing
 import kotlinx.serialization.Serializable
-import storage.AbstractHumanCollection
+import storage.HumanCollectionInterface
 import utils.CommandAnnotation
 import utils.PrintTypesEnum
 
@@ -10,7 +10,7 @@ import utils.PrintTypesEnum
 @CommandAnnotation("add", "This command adds object to deque")
 class AddCommand(private val humanBeing: HumanBeing) : SealedCommand {
 
-    override fun execute(collection: AbstractHumanCollection): List<Pair<PrintTypesEnum, String>> {
+    override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.add(humanBeing)
         val list = mutableListOf<Pair<PrintTypesEnum, String>>()
         list.add(Pair(PrintTypesEnum.INFO, "Human ${humanBeing.name} has been added successfully!"))
