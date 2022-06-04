@@ -8,7 +8,7 @@ import java.io.BufferedWriter
 import java.io.File
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("save", "Saves current collection to file")
+@CommandAnnotation("save", "Saves current collection to file", "sa")
 class SaveCommand(val filePath: String) : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

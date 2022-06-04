@@ -7,7 +7,7 @@ import utils.CommandAnnotation
 import utils.PrintTypesEnum
 
 @Serializable
-@CommandAnnotation("add", "This command adds object to deque")
+@CommandAnnotation("add", "This command adds object to deque", "ad")
 class AddCommand(private val humanBeing: HumanBeing) : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

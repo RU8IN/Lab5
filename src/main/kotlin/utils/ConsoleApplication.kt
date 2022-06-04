@@ -8,8 +8,6 @@ class ConsoleApplication(
     private val logger: Logger,
     private val collection: HumanCollectionInterface
 ) {
-
-
     fun run() {
         logger.log(PrintTypesEnum.INFO to "Ryan Gosling Maker 1.0")
         while (true) {

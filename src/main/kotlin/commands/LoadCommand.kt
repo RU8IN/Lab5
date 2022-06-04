@@ -8,7 +8,7 @@ import java.io.BufferedReader
 import java.io.File
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("load", "Loads collection from xml file")
+@CommandAnnotation("load", "Loads collection from xml file", "lo")
 class LoadCommand(val filePath: String) : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

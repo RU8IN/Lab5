@@ -5,7 +5,7 @@ import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("remove_first", "Removes first element in collection")
+@CommandAnnotation("remove_first", "Removes first element in collection", "rf")
 class RemoveFirstCommand() : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

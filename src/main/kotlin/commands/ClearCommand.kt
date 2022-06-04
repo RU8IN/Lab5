@@ -6,7 +6,7 @@ import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
 @Serializable
-@CommandAnnotation("clear", "Clears collection")
+@CommandAnnotation("clear", "Clears collection", "cl")
 class ClearCommand : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

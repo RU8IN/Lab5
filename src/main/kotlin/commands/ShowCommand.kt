@@ -5,7 +5,7 @@ import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("show", "This shows every element in collection")
+@CommandAnnotation("show", "This shows every element in collection", "sh")
 class ShowCommand() : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {

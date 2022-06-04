@@ -1,18 +1,32 @@
+@file:UseSerializers(HumanBeingSerializer::class)
+
 package storage
 
+import Serialization.ArrayDequeSerializer
 import driver.HumanBeing
+import driver.HumanBeingSerializer
 import exceptions.CollectionIsEmptyException
 import exceptions.NoHumanBeingWithSuchIdException
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Transient
+import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.Serializable
 import java.util.ArrayDeque
 
-@kotlinx.serialization.Serializable
-object LocalHumanCollection : HumanCollectionInterface {
 
-    private val initializationDate: Instant = Clock.System.now()
+@Serializable
+class LocalHumanCollection(
+    @Serializable
+    private val initializationDate: Instant = Clock.System.now(),
+
+    @Serializable(with=ArrayDequeSerializer::class)
     private val arrayDeque: ArrayDeque<HumanBeing> = ArrayDeque<HumanBeing>()
+
+) : HumanCollectionInterface {
+
+//    @Serializable
+//    private val serializableList: List<HumanBeing> = if (this.arrayDeque.isEmpty()) { listOf<HumanBeing>() } else { this.arrayDeque.toList() }
 
     override fun removeById(id: Long) {
         val iter = arrayDeque.iterator()
@@ -121,10 +135,15 @@ object LocalHumanCollection : HumanCollectionInterface {
         return list
     }
 
+    fun toArray() = this.arrayDeque.toTypedArray()
 
     override fun removeFirst() {
         if (this.arrayDeque.isEmpty()) throw CollectionIsEmptyException()
         this.arrayDeque.removeFirst()
+    }
+
+    override fun isEmpty(): Boolean {
+        return this.arrayDeque.isEmpty()
     }
 
 }

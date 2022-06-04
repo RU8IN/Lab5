@@ -7,7 +7,7 @@ import utils.PrintTypesEnum
 import kotlin.system.exitProcess
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("exit", "Exits")
+@CommandAnnotation("exit", "Exits", "ex")
 class ExitCommand(): SealedCommand {
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         val logger = ConsoleLogger

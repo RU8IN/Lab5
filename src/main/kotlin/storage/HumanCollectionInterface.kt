@@ -18,6 +18,7 @@ interface HumanCollectionInterface : Iterable<HumanBeing> {
     fun getById(id: Long): HumanBeing?
     fun clear()
     fun removeFirst()
+    fun isEmpty(): Boolean
 }
 
 

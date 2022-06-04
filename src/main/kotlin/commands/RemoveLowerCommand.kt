@@ -6,7 +6,7 @@ import utils.PrintTypesEnum
 import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
-@CommandAnnotation("remove_lower", "Removes minimal element in collection")
+@CommandAnnotation("remove_lower", "Removes minimal element in collection", "rl")
 class RemoveLowerCommand(private val human: HumanBeing) : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
