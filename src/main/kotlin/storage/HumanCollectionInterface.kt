@@ -19,6 +19,8 @@ interface HumanCollectionInterface : Iterable<HumanBeing> {
     fun clear()
     fun removeFirst()
     fun isEmpty(): Boolean
+    fun loadCollection(newCollection: LocalHumanCollection)
+    fun executeScript()
 }
 
 

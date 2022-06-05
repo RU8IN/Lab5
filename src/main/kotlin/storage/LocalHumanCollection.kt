@@ -1,16 +1,12 @@
-@file:UseSerializers(HumanBeingSerializer::class)
-
 package storage
 
-import Serialization.ArrayDequeSerializer
 import driver.HumanBeing
-import driver.HumanBeingSerializer
 import exceptions.CollectionIsEmptyException
 import exceptions.NoHumanBeingWithSuchIdException
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Transient
-import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.Serializable
 import java.util.ArrayDeque
 
@@ -18,12 +14,19 @@ import java.util.ArrayDeque
 @Serializable
 class LocalHumanCollection(
     @Serializable
+    @SerialName("List of HumanBeans")
+    private val humansList: MutableList<HumanBeing> = mutableListOf(),
+    @Serializable
+    @SerialName("Creation Date")
     private val initializationDate: Instant = Clock.System.now(),
+) : HumanCollectionInterface {
 
-    @Serializable(with=ArrayDequeSerializer::class)
+    @Transient
     private val arrayDeque: ArrayDeque<HumanBeing> = ArrayDeque<HumanBeing>()
 
-) : HumanCollectionInterface {
+    init {
+        for (el in this.humansList.iterator()) this.arrayDeque.add(el)
+    }
 
 //    @Serializable
 //    private val serializableList: List<HumanBeing> = if (this.arrayDeque.isEmpty()) { listOf<HumanBeing>() } else { this.arrayDeque.toList() }
@@ -105,6 +108,7 @@ class LocalHumanCollection(
 
     override fun add(humanBeing: HumanBeing) {
         humanBeing.id = getMaxIdInCollection() + 1
+        this.humansList.add(humanBeing)
         this.arrayDeque.add(humanBeing)
     }
 
@@ -146,5 +150,19 @@ class LocalHumanCollection(
         return this.arrayDeque.isEmpty()
     }
 
+    override fun loadCollection(newCollection: LocalHumanCollection) {
+        println(newCollection)
+        this.humansList.clear()
+        this.arrayDeque.clear()
+        for (el in newCollection) {
+            println(el)
+            this.humansList.add(el)
+            this.arrayDeque.add(el)
+        }
+    }
+
+    override fun executeScript() {
+        TODO("Not yet implemented")
+    }
 }
 

@@ -1,7 +1,10 @@
 package driver
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.encoding.Decoder
@@ -15,12 +18,16 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
         encoder.encodeStructure(descriptor) {
             encodeStringElement(descriptor, 0, value.name)
             encodeSerializableElement(descriptor, 1, Coordinates.serializer(), value.coordinates)
-            value.realHero?.let { encodeBooleanElement(descriptor, 2, it) }
-            encodeLongElement(descriptor, 3, value.impactSeed)
-            encodeStringElement(descriptor, 4, value.soundtrackName)
-            encodeDoubleElement(descriptor, 5, value.minutesOfWaiting)
-            encodeSerializableElement(descriptor, 6, Mood.serializer(), value.mood)
-            encodeSerializableElement(descriptor, 7, Car.serializer(), value.car)
+            encodeBooleanElement(descriptor, 2, value.realHero!!)
+            encodeBooleanElement(descriptor, 3, value.hasToothPick)
+//            value.realHero?.let { encodeBooleanElement(descriptor, 2, it) }
+            encodeLongElement(descriptor, 4, value.impactSeed)
+            encodeStringElement(descriptor, 5, value.soundtrackName)
+            encodeDoubleElement(descriptor, 6, value.minutesOfWaiting)
+            encodeSerializableElement(descriptor, 7, Mood.serializer(), value.mood)
+            encodeSerializableElement(descriptor, 8, Car.serializer(), value.car)
+            encodeSerializableElement(descriptor, 9, Instant.serializer(), value.creationDate)
+            encodeLongElement(descriptor, 10, value.id!!)
         }
     }
 
@@ -36,6 +43,8 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
         var minutesOfWaiting: Double = 0.0
         var mood: Mood = Mood.APATHY
         var car: Car = Car("defaultCarName")
+        var creationDate: Instant = Clock.System.now()
+        var id: Long? = null
         loop@ while (true) {
             when (val index = decodeElementIndex(descriptor)) {
                 DECODE_DONE -> break@loop
@@ -66,6 +75,14 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
                 8 -> {
                     car = decodeSerializableElement(descriptor, index = 8, Car.serializer())
                 }
+                9 -> {
+                    creationDate = decodeSerializableElement(descriptor, index=9, Instant.serializer())
+//                    creationDate = Clock.System.now()
+                }
+                10 -> {
+                    id = decodeLongElement(descriptor, index=10)
+//                    id = null
+                }
                 else -> throw SerializationException("Unexpected index $index")
             }
         }
@@ -79,21 +96,25 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
             soundtrackName,
             minutesOfWaiting,
             mood,
-            car
+            car,
+            creationDate,
+            id
         )
     }
 
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("HumanBeing") {
-            element<String>("name")
-            element<Coordinates>("coordinates")
-            element<Boolean>("realHero")
-            element<Boolean>("hasToothPick")
-            element<Long>("impactSeed")
-            element<String>("soundtrackName")
-            element<Double>("minutesOfWaiting")
-            element<Mood>("mood")
-            element<Car>("car")
+            element<String>("Name")
+            element<Coordinates>("Coordinates")
+            element<Boolean>("Real Hero")
+            element<Boolean>("Has Toothpick")
+            element<Long>("Impact Seed")
+            element<String>("Soundtrack Name")
+            element<Double>("Minutes of Waiting")
+            element<Mood>("Mood")
+            element<Car>("Car")
+            element<Instant>("Creation Date")
+            element<Long>("ID")
         }
 
 //    override val descriptor: SerialDescriptor

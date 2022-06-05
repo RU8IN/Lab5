@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 
 sealed interface SealedCommand{
 
-    abstract fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>>
+    fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>>
 
 }
 

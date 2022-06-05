@@ -24,14 +24,14 @@ data class HumanBeing(
     @SerialName("Mood")
     val mood: Mood,
     @SerialName("Car Name")
-    val car: Car
-) : Comparable<HumanBeing> {
-
+    val car: Car,
     @Serializable
-    val creationDate: Instant = Clock.System.now()
-
+    val creationDate: Instant = Clock.System.now(),
     @Serializable
     var id: Long? = null
+) : Comparable<HumanBeing> {
+
+
 
     override fun compareTo(other: HumanBeing): Int = this.impactSeed.compareTo(other.impactSeed)
 

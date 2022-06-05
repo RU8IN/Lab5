@@ -23,6 +23,7 @@ class Parser(private val logger: Logger) : ParserInterface {
             ShowCommand::class.commandName, ShowCommand::class.shortName -> return ShowCommand.serializer().deserialize(ConsoleDecoder(logger))
             SortedByDescendingMoodCommand::class.commandName, SortedByDescendingMoodCommand::class.shortName -> return SortedByDescendingMoodCommand.serializer().deserialize(ConsoleDecoder(logger))
             UpdateCommand::class.commandName, UpdateCommand::class.shortName -> return UpdateCommand.serializer().deserialize(ConsoleDecoder(logger))
+            LoadCommand::class.commandName, LoadCommand::class.shortName -> return LoadCommand.serializer().deserialize(ConsoleDecoder(logger))
         }
         throw NoSuchCommandException()
     }

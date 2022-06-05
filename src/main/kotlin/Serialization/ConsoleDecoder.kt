@@ -44,7 +44,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.BOOLEAN].
      */
     override fun decodeBoolean(): Boolean {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа BOOLEAN ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter BOOLEAN ")
         return readln().toBoolean()
     }
 
@@ -53,7 +53,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.BYTE].
      */
     override fun decodeByte(): Byte {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа BYTE")
+        logger.log(PrintTypesEnum.QUESTION to "Enter BYTE")
         return readln().toByte()
     }
 
@@ -70,7 +70,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.DOUBLE].
      */
     override fun decodeDouble(): Double {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа DOUBLE")
+        logger.log(PrintTypesEnum.QUESTION to "Enter DOUBLE")
         return readln().toDouble()
     }
 
@@ -85,7 +85,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * the format is free to store the enum by its name, index, ordinal or any other enum representation.
      */
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа ENUM (${enumDescriptor.elementNames.joinToString()})")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ENUM (${enumDescriptor.elementNames.joinToString()})")
         val result = enumDescriptor.elementNames.indexOf(readln())
         if (result == -1) throw NoSuchMoodException()
         return result
@@ -129,7 +129,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.INT].
      */
     override fun decodeInt(): Int {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа INT ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter INT ")
         return readln().toInt()
     }
 
@@ -138,7 +138,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.LONG].
      */
     override fun decodeLong(): Long {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа LONG ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter LONG ")
         return readln().toLong()
 
     }
@@ -186,7 +186,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.STRING].
      */
     override fun decodeString(): String {
-        logger.log(PrintTypesEnum.QUESTION to "Введите поле типа STRING")
+        logger.log(PrintTypesEnum.QUESTION to "Enter STRING")
         return readln()
     }
 }
@@ -207,7 +207,7 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     private inline fun logWithQuestion(descriptor: SerialDescriptor, index: Int) {
         logger.log(
             PrintTypesEnum.QUESTION to
-                    "Введите поле ${descriptor.getElementName(index)} типа ${descriptor.getElementDescriptor(index).kind}"
+                    "Enter ${descriptor.getElementName(index)} of type ${descriptor.getElementDescriptor(index).kind}"
         )
     }
 
@@ -320,69 +320,23 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
         return readln().toFloat()
     }
 
-    /**
-     * Returns [Decoder] for decoding an underlying type of an inline class.
-     * Serializable inline class is described by the [child descriptor][SerialDescriptor.getElementDescriptor]
-     * of given [descriptor] at [index].
-     *
-     * Namely, for the `@Serializable inline class MyInt(val my: Int)`,
-     * and `@Serializable class MyData(val myInt: MyInt)`
-     * the following sequence is used:
-     * ```
-     * thisDecoder.decodeInlineElement(MyData.serializer().descriptor, 0).decodeInt()
-     * ```
-     *
-     * This method provides an opportunity for the optimization and its invocation should be identical to
-     * ```
-     * thisDecoder.decodeSerializableElement(MyData.serializer.descriptor, 0, MyInt.serializer())
-     * ```
-     *
-     * Current decoder may return any other instance of [Decoder] class, depending on the provided descriptor.
-     * For example, when this function is called on Json decoder with descriptor that has
-     * `UInt.serializer().descriptor` at the given [index], the returned decoder is able
-     * to decode unsigned integers.
-     *
-     * Note that this function returns [Decoder] instead of the [CompositeDecoder]
-     * because inline classes always have the single property.
-     * Calling [Decoder.beginStructure] on returned instance leads to an undefined behavior.
-     *
-     * @see Decoder.decodeInline
-     * @see SerialDescriptor.getElementDescriptor
-     */
     @ExperimentalSerializationApi
     override fun decodeInlineElement(descriptor: SerialDescriptor, index: Int): Decoder {
         TODO("Not yet implemented")
     }
 
-    /**
-     * Decodes a 32-bit integer value from the underlying input.
-     * The resulting value is associated with the [descriptor] element at the given [index].
-     * The element at the given index should have [PrimitiveKind.INT] kind.
-     */
+
     override fun decodeIntElement(descriptor: SerialDescriptor, index: Int): Int {
         logWithQuestion(descriptor, index)
         return readln().toInt()
     }
 
-    /**
-     * Decodes a 64-bit integer value from the underlying input.
-     * The resulting value is associated with the [descriptor] element at the given [index].
-     * The element at the given index should have [PrimitiveKind.LONG] kind.
-     */
     override fun decodeLongElement(descriptor: SerialDescriptor, index: Int): Long {
         logWithQuestion(descriptor, index)
         return readln().toLong()
     }
 
-    /**
-     * Decodes nullable value of the type [T] with the given [deserializer].
-     *
-     * If value at given [index] was already decoded with previous [decodeSerializableElement] call with the same index,
-     * [previousValue] would contain a previously decoded value.
-     * This parameter can be used to aggregate multiple values of the given property to the only one.
-     * Implementation can safely ignore it and return a new value, efficiently using 'the last one wins' strategy,
-     * or apply format-specific aggregating strategies, e.g. appending scattered Protobuf lists to a single one.
-     */
+
     @ExperimentalSerializationApi
     override fun <T : Any> decodeNullableSerializableElement(
         descriptor: SerialDescriptor,
@@ -392,23 +346,11 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     ): T? {
         logger.log(
             PrintTypesEnum.INFO to
-                    "Ввод объекта: ${descriptor.getElementName(index)}"
+                    "Enter object: ${descriptor.getElementName(index)}"
         )
         return deserializer.deserialize(ConsoleDecoder(logger))
     }
 
-    /**
-     * Decodes value of the type [T] with the given [deserializer].
-     *
-     * Implementations of [CompositeDecoder] may use their format-specific deserializers
-     * for particular data types, e.g. handle [ByteArray] specifically if format is binary.
-     *
-     * If value at given [index] was already decoded with previous [decodeSerializableElement] call with the same index,
-     * [previousValue] would contain a previously decoded value.
-     * This parameter can be used to aggregate multiple values of the given property to the only one.
-     * Implementation can safely ignore it and return a new value, effectively using 'the last one wins' strategy,
-     * or apply format-specific aggregating strategies, e.g. appending scattered Protobuf lists to a single one.
-     */
     override fun <T> decodeSerializableElement(
         descriptor: SerialDescriptor,
         index: Int,
@@ -417,16 +359,12 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     ): T {
         logger.log(
             PrintTypesEnum.INFO to
-                    "Ввод объекта: ${descriptor.getElementName(index)}"
+                    "Enter object: ${descriptor.getElementName(index)}"
         )
         return deserializer.deserialize(ConsoleDecoder(logger))
     }
 
-    /**
-     * Decodes a 16-bit short value from the underlying input.
-     * The resulting value is associated with the [descriptor] element at the given [index].
-     * The element at the given index should have [PrimitiveKind.SHORT] kind.
-     */
+
     override fun decodeShortElement(descriptor: SerialDescriptor, index: Int): Short {
         logWithQuestion(descriptor, index)
         return readln().toShort()
