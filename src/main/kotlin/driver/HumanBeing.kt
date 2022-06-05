@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+
 @Serializable(with = HumanBeingSerializer::class)
 data class HumanBeing(
     @SerialName("Name")
@@ -25,9 +26,7 @@ data class HumanBeing(
     val mood: Mood,
     @SerialName("Car Name")
     val car: Car,
-    @Serializable
     val creationDate: Instant = Clock.System.now(),
-    @Serializable
     var id: Long? = null
 ) : Comparable<HumanBeing> {
 

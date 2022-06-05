@@ -4,7 +4,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.encoding.Decoder
@@ -20,7 +19,6 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
             encodeSerializableElement(descriptor, 1, Coordinates.serializer(), value.coordinates)
             encodeBooleanElement(descriptor, 2, value.realHero!!)
             encodeBooleanElement(descriptor, 3, value.hasToothPick)
-//            value.realHero?.let { encodeBooleanElement(descriptor, 2, it) }
             encodeLongElement(descriptor, 4, value.impactSeed)
             encodeStringElement(descriptor, 5, value.soundtrackName)
             encodeDoubleElement(descriptor, 6, value.minutesOfWaiting)
@@ -35,7 +33,7 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
     override fun deserialize(decoder: Decoder): HumanBeing = decoder.decodeStructure(descriptor) {
         // decodeStructure decodes beginning and end of the structure
         var name: String = "defaultName"
-        var coordinates: Coordinates = Coordinates(0,0)
+        var coordinates: Coordinates = Coordinates(0, 0)
         var realHero: Boolean? = false
         var hasToothPick: Boolean = false
         var impactSeed: Long = 0L
@@ -76,12 +74,10 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
                     car = decodeSerializableElement(descriptor, index = 8, Car.serializer())
                 }
                 9 -> {
-                    creationDate = decodeSerializableElement(descriptor, index=9, Instant.serializer())
-//                    creationDate = Clock.System.now()
+                    creationDate = decodeSerializableElement(descriptor, index = 9, Instant.serializer())
                 }
                 10 -> {
-                    id = decodeLongElement(descriptor, index=10)
-//                    id = null
+                    id = decodeLongElement(descriptor, index = 10)
                 }
                 else -> throw SerializationException("Unexpected index $index")
             }
@@ -116,9 +112,4 @@ object HumanBeingSerializer : KSerializer<HumanBeing> {
             element<Instant>("Creation Date")
             element<Long>("ID")
         }
-
-//    override val descriptor: SerialDescriptor
-//        get() = PrimitiveSerialDescriptor("HumanBeing", PrimitiveKind.STRING)
-
-
 }

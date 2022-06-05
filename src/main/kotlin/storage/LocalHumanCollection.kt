@@ -5,18 +5,23 @@ import exceptions.CollectionIsEmptyException
 import exceptions.NoHumanBeingWithSuchIdException
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Transient
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import utils.PrintTypesEnum
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileNotFoundException
 import java.util.ArrayDeque
 
 
 @Serializable
 class LocalHumanCollection(
-    @Serializable
     @SerialName("List of HumanBeans")
+    @Contextual
     private val humansList: MutableList<HumanBeing> = mutableListOf(),
-    @Serializable
     @SerialName("Creation Date")
     private val initializationDate: Instant = Clock.System.now(),
 ) : HumanCollectionInterface {
@@ -150,14 +155,18 @@ class LocalHumanCollection(
         return this.arrayDeque.isEmpty()
     }
 
-    override fun loadCollection(newCollection: LocalHumanCollection) {
-        println(newCollection)
-        this.humansList.clear()
+    override fun loadCollection(newCollectionPath: String) {
+        val bufferedReader = BufferedReader(File(newCollectionPath).bufferedReader())
+        var jsonCollection = ""
+        bufferedReader.use {
+            jsonCollection += bufferedReader.readLine()
+        }
+        val newCollection = Json.decodeFromString(LocalHumanCollection.serializer(), jsonCollection)
         this.arrayDeque.clear()
+        this.humansList.clear()
         for (el in newCollection) {
-            println(el)
-            this.humansList.add(el)
             this.arrayDeque.add(el)
+            this.humansList.add(el)
         }
     }
 

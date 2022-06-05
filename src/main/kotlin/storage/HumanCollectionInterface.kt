@@ -19,26 +19,6 @@ interface HumanCollectionInterface : Iterable<HumanBeing> {
     fun clear()
     fun removeFirst()
     fun isEmpty(): Boolean
-    fun loadCollection(newCollection: LocalHumanCollection)
+    fun loadCollection(newCollectionPath: String)
     fun executeScript()
-}
-
-
-fun <T> HumanCollectionInterface.filterBy(
-    getter: KProperty1<HumanBeing, T>,
-    comparator: (T, T) -> Int
-): List<HumanBeing> {
-
-    val list = this.toMutableList()
-
-    for (i in list.indices) {
-        for (j in 0 until i) {
-            if (comparator(getter(list[i]), getter(list[j])) > 0) {
-                val a = list[j]
-                list[j] = list[i]
-                list[i] = a
-            }
-        }
-    }
-    return list
 }

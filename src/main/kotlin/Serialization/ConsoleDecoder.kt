@@ -1,10 +1,13 @@
 package utils
 
+import driver.HumanBeing
 import exceptions.NoSuchMoodException
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.capturedKClass
 import kotlinx.serialization.descriptors.elementNames
+import kotlinx.serialization.descriptors.getContextualDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.modules.EmptySerializersModule
@@ -306,8 +309,15 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
      * If [decodeSequentially] returns `true`, the caller might skip calling this method.
      */
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        if (this.index >= descriptor.elementsCount) return CompositeDecoder.DECODE_DONE
-        return this.index++
+        if (descriptor.elementsCount > 5) {
+            if (this.index >= descriptor.elementsCount - 2) return CompositeDecoder.DECODE_DONE
+            return this.index++
+        }
+        else {
+            if (this.index >= descriptor.elementsCount) return CompositeDecoder.DECODE_DONE
+            return this.index++
+        }
+
     }
 
     /**
