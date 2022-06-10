@@ -1,18 +1,14 @@
 package utils
 
-import driver.HumanBeing
 import exceptions.NoSuchMoodException
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.capturedKClass
 import kotlinx.serialization.descriptors.elementNames
-import kotlinx.serialization.descriptors.getContextualDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
-import kotlin.system.exitProcess
 
 class ConsoleDecoder(private val logger: Logger) : Decoder {
     /**
@@ -47,7 +43,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.BOOLEAN].
      */
     override fun decodeBoolean(): Boolean {
-        logger.log(PrintTypesEnum.QUESTION to "Enter BOOLEAN ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}BOOLEAN")
         return readln().toBoolean()
     }
 
@@ -56,7 +52,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.BYTE].
      */
     override fun decodeByte(): Byte {
-        logger.log(PrintTypesEnum.QUESTION to "Enter BYTE")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}BYTE")
         return readln().toByte()
     }
 
@@ -73,7 +69,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.DOUBLE].
      */
     override fun decodeDouble(): Double {
-        logger.log(PrintTypesEnum.QUESTION to "Enter DOUBLE")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}DOUBLE")
         return readln().toDouble()
     }
 
@@ -88,7 +84,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * the format is free to store the enum by its name, index, ordinal or any other enum representation.
      */
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
-        logger.log(PrintTypesEnum.QUESTION to "Enter ENUM (${enumDescriptor.elementNames.joinToString()})")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ENUM (${ANSIColors.BLUE}${enumDescriptor.elementNames.joinToString()}${ANSIColors.RESET})")
         val result = enumDescriptor.elementNames.indexOf(readln())
         if (result == -1) throw NoSuchMoodException()
         return result
@@ -132,7 +128,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.INT].
      */
     override fun decodeInt(): Int {
-        logger.log(PrintTypesEnum.QUESTION to "Enter INT ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}INT")
         return readln().toInt()
     }
 
@@ -141,7 +137,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.LONG].
      */
     override fun decodeLong(): Long {
-        logger.log(PrintTypesEnum.QUESTION to "Enter LONG ")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}LONG")
         return readln().toLong()
 
     }
@@ -189,7 +185,7 @@ class ConsoleDecoder(private val logger: Logger) : Decoder {
      * Corresponding kind is [PrimitiveKind.STRING].
      */
     override fun decodeString(): String {
-        logger.log(PrintTypesEnum.QUESTION to "Enter STRING")
+        logger.log(PrintTypesEnum.QUESTION to "Enter ${ANSIColors.BLUE}STRING")
         return readln()
     }
 }
@@ -210,7 +206,11 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     private inline fun logWithQuestion(descriptor: SerialDescriptor, index: Int) {
         logger.log(
             PrintTypesEnum.QUESTION to
-                    "Enter ${descriptor.getElementName(index)} of type ${descriptor.getElementDescriptor(index).kind}"
+                    "Enter ${descriptor.getElementName(index)} of type ${ANSIColors.BLUE}${
+                        descriptor.getElementDescriptor(
+                            index
+                        ).kind
+                    }${ANSIColors.RESET}"
         )
     }
 
@@ -356,7 +356,7 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     ): T? {
         logger.log(
             PrintTypesEnum.INFO to
-                    "Enter object: ${descriptor.getElementName(index)}"
+                    "Enter object: ${ANSIColors.BLUE}${descriptor.getElementName(index)}"
         )
         return deserializer.deserialize(ConsoleDecoder(logger))
     }
@@ -369,7 +369,7 @@ class ConsoleCompositeDecoder(private val logger: Logger) : CompositeDecoder {
     ): T {
         logger.log(
             PrintTypesEnum.INFO to
-                    "Enter object: ${descriptor.getElementName(index)}"
+                    "Enter object: ${ANSIColors.PURPLE}${descriptor.getElementName(index)}"
         )
         return deserializer.deserialize(ConsoleDecoder(logger))
     }

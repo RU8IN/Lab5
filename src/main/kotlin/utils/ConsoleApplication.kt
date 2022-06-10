@@ -9,22 +9,27 @@ class ConsoleApplication(
     private val collection: HumanCollectionInterface,
     private val collectionPath: String? = null
 ) {
+
+    private val stardartIn = System.`in`
+
+
     fun run() {
         logger.log(PrintTypesEnum.INFO to "Ryan Gosling Maker 1.0")
+        collectionPath?.let {
+            LoadCommand(collectionPath).execute(collection)
+        }
+
         while (true) {
             try {
-                collectionPath?.let { LoadCommand(collectionPath).execute(collection) }
                 val currentCommand = parser.parse(readln())
                 logger.log(currentCommand.execute(collection))
-            }
-            catch(e: IllegalArgumentException) {
+            } catch (e: IllegalArgumentException) {
                 logger.log(PrintTypesEnum.WARNING to "Wrong argument type")
-            }
-            catch (e: RuntimeException) {
+            } catch (e: RuntimeException) {
                 logger.log(PrintTypesEnum.WARNING to e.message.toString())
             }
             catch (e: Exception) {
-                logger.log(PrintTypesEnum.WARNING to e.toString())
+                logger.log(PrintTypesEnum.WARNING to e.message.toString())
             }
         }
     }

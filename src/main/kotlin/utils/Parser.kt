@@ -2,7 +2,6 @@ package utils
 
 import commands.*
 import exceptions.NoSuchCommandException
-import kotlin.reflect.full.declaredMemberProperties
 
 class Parser(private val logger: Logger) : ParserInterface {
     override fun parse(string: String): SealedCommand {

@@ -7,14 +7,12 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Transient
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
-import utils.PrintTypesEnum
 import java.io.BufferedReader
 import java.io.File
-import java.io.FileNotFoundException
-import java.util.ArrayDeque
+import java.util.*
 
 
 @Serializable
@@ -49,7 +47,6 @@ class LocalHumanCollection(
 
     override fun update(id: Long, humanBeing: HumanBeing) {
         val iter = this.arrayDeque.iterator()
-        println(iter)
         for (el in iter) {
             if (el.id == id) {
                 iter.remove()
@@ -161,7 +158,7 @@ class LocalHumanCollection(
         bufferedReader.use {
             jsonCollection += bufferedReader.readLine()
         }
-        val newCollection = Json.decodeFromString(LocalHumanCollection.serializer(), jsonCollection)
+        val newCollection = Json.decodeFromString(serializer(), jsonCollection)
         this.arrayDeque.clear()
         this.humansList.clear()
         for (el in newCollection) {

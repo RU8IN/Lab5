@@ -4,8 +4,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import utils.ANSIColors
 
-
+@SerialName("Human Being")
 @Serializable(with = HumanBeingSerializer::class)
 data class HumanBeing(
     @SerialName("Name")
@@ -36,17 +37,17 @@ data class HumanBeing(
 
     override fun toString(): String {
         return """
-                Human: $name
-                Coordinates: $coordinates
-                Real Hero: $realHero
-                Has Tooth Pick: $hasToothPick
-                Impact Seed: $impactSeed
-                Soundtrack Name: $soundtrackName
-                Minutes of Waiting: $minutesOfWaiting
-                Mood: $mood
-                Car: $car
-                Id: $id
-                Creation Date: $creationDate
+                Human: ${ANSIColors.CYAN}$name${ANSIColors.RESET}
+                Coordinates: ${ANSIColors.CYAN}$coordinates${ANSIColors.RESET}
+                Real Hero: ${ANSIColors.CYAN}$realHero${ANSIColors.RESET}
+                Has Tooth Pick: ${ANSIColors.CYAN}$hasToothPick${ANSIColors.RESET}
+                Impact Seed: ${ANSIColors.CYAN}$impactSeed${ANSIColors.RESET}
+                Soundtrack Name: ${ANSIColors.CYAN}$soundtrackName${ANSIColors.RESET}
+                Minutes of Waiting: ${ANSIColors.CYAN}$minutesOfWaiting${ANSIColors.RESET}
+                Mood: ${ANSIColors.CYAN}$mood${ANSIColors.RESET}
+                Car: ${ANSIColors.CYAN}$car${ANSIColors.RESET}
+                Id: ${ANSIColors.CYAN}$id${ANSIColors.RESET}
+                Creation Date: ${ANSIColors.CYAN}$creationDate${ANSIColors.RESET}
             """.trimIndent()
     }
 }

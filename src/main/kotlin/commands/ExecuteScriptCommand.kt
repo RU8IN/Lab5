@@ -1,33 +1,80 @@
 package commands
 
+import exceptions.ExecuteScriptRecursionException
+import exceptions.SaveException
 import storage.HumanCollectionInterface
 import utils.CommandAnnotation
+import utils.ConsoleLogger
+import utils.Parser
 import utils.PrintTypesEnum
-import java.io.*
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.File
+import java.lang.Integer.max
+
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("execute_script", "Executes script with commands from file", "es")
-class ExecuteScriptCommand() : SealedCommand {
+class ExecuteScriptCommand(val pathName: String) : SealedCommand {
+
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
-//        val sb = StringBuilder()
-//        var line: String? = ""
-//        try {
-//            val br: BufferedReader = BufferedReader(FileReader(File(filePath)))
-//            br.use {
-//                while (line != null) {
-//                    line = br.readLine()
-//                    if (line != null) {
-//                        sb.append(line).append("\n")
-//                    }
-//                }
-//            }
-//        } catch (e: FileNotFoundException) {
-//            println("File not found: $filePath")
-//        } catch (e: IOException) {
-//            println("File could not be read: $filePath")
-//        }
-//        return listOf(PrintTypesEnum.INFO to "Script executed")
-//    }
-        return listOf(PrintTypesEnum.WARNING to "TODO: EXECUTE SCRIPT") }
+        var recursionCounter = 0
+        val newRecursionCounter: Int
+        val list = listOf<Pair<PrintTypesEnum, String>>()
+        val logger = ConsoleLogger
+        val parser = Parser(logger)
+
+        if (File("execute.meta").exists()) {
+            try {
+                val bufferedReader = BufferedReader(File("execute.meta").bufferedReader())
+                bufferedReader.use {
+                    newRecursionCounter = bufferedReader.readLine().toInt()
+                    recursionCounter = max(recursionCounter, newRecursionCounter)
+                }
+            } catch (e: Exception) {
+                logger.log(PrintTypesEnum.WARNING to e.message.toString())
+            }
+        }
+
+        val standardIn = System.`in`
+        File(pathName).inputStream().use {
+            System.setIn(it)
+
+            while (true) {
+                try {
+                    val currentCommand = parser.parse(readln())
+                    if (currentCommand.name == ExecuteScriptCommand::class.commandName && recursionCounter > 5) {
+                        val file = File("execute.meta")
+                        file.delete()
+                        throw ExecuteScriptRecursionException()
+                    } else if (currentCommand.name == ExecuteScriptCommand::class.commandName) {
+                        recursionCounter += 1
+                        val bufferedWriter = BufferedWriter(File("execute.meta").bufferedWriter())
+                        try {
+                            bufferedWriter.use {
+                                bufferedWriter.write(
+                                    recursionCounter.toString()
+                                )
+                            }
+                        } catch (e: RuntimeException) {
+                            throw SaveException()
+                        }
+                    }
+                    logger.log(currentCommand.execute(collection))
+                } catch (e: ExecuteScriptRecursionException) {
+                    System.setIn(standardIn)
+                    return listOf(PrintTypesEnum.WARNING to e.message.toString())
+                } catch (e: RuntimeException) {
+                    break
+                }
+            }
+            System.setIn(standardIn)
+        }
+        if (recursionCounter == 1) {
+            return listOf(PrintTypesEnum.INFO to "Script executed successfully")
+        } else {
+            return list
+        }
+    }
 }
 

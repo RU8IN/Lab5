@@ -18,16 +18,25 @@ class SaveCommand(
     ) : SealedCommand {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
-
-        val bufferedWriter = BufferedWriter(File(filePath).bufferedWriter())
+        val file = File(filePath)
+        if (file.exists()) {
+            file.delete()
+        }
+        val bufferedWriter = BufferedWriter(file.bufferedWriter())
 
         try {
             bufferedWriter.use {
-                bufferedWriter.write((Json.encodeToString(LocalHumanCollection.serializer(), collection as LocalHumanCollection)))
+                println(collection)
+                println(Json.encodeToString(LocalHumanCollection.serializer(), collection as LocalHumanCollection))
+                bufferedWriter.write(
+                    (Json.encodeToString(
+                        LocalHumanCollection.serializer(),
+                        collection as LocalHumanCollection
+                    ))
+                )
             }
             return listOf(PrintTypesEnum.INFO to "Collections saved")
-        }
-        catch (e: RuntimeException) {
+        } catch (e: RuntimeException) {
             throw SaveException()
         }
 
