@@ -6,7 +6,7 @@ import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("help", "This command helps you with understanding other programs!", "he")
-class HelpCommand() : SealedCommand {
+class HelpCommand() : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         val commandsHelpList = mutableListOf<Pair<PrintTypesEnum, String>>()

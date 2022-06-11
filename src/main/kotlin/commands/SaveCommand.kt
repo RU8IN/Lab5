@@ -15,7 +15,7 @@ import java.io.File
 class SaveCommand(
     @SerialName("File Path")
     val filePath: String
-    ) : SealedCommand {
+    ) : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         val file = File(filePath)

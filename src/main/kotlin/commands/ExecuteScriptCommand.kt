@@ -15,7 +15,7 @@ import java.lang.Integer.max
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("execute_script", "Executes script with commands from file", "es")
-class ExecuteScriptCommand(val pathName: String) : SealedCommand {
+class ExecuteScriptCommand(val pathName: String) : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         var recursionCounter = 0

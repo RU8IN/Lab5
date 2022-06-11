@@ -32,7 +32,6 @@ data class HumanBeing(
 ) : Comparable<HumanBeing> {
 
 
-
     override fun compareTo(other: HumanBeing): Int = this.impactSeed.compareTo(other.impactSeed)
 
     override fun toString(): String {

@@ -7,7 +7,7 @@ import utils.CommandAnnotation
 
 @Serializable
 @CommandAnnotation("clear", "Clears collection", "cl")
-class ClearCommand : SealedCommand {
+class ClearCommand : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.clear()

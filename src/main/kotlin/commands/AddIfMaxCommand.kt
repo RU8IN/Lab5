@@ -7,7 +7,7 @@ import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("add_if_max", "Adds element if it is higher than max in collection", "aim")
-class AddIfMaxCommand(private val human: HumanBeing) : SealedCommand {
+class AddIfMaxCommand(private val human: HumanBeing) : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         if (collection.addIfMax(human))

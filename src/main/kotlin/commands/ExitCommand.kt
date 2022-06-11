@@ -8,7 +8,7 @@ import kotlin.system.exitProcess
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("exit", "Exits", "ex")
-class ExitCommand(): SealedCommand {
+class ExitCommand(): SealedCommand() {
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         val logger = ConsoleLogger
         logger.log(PrintTypesEnum.INFO to "Exiting program...")

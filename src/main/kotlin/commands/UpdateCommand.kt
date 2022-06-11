@@ -8,7 +8,7 @@ import utils.PrintTypesEnum
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("update", "Updates element of collection by id", "up")
-class UpdateCommand(private val human: HumanBeing, private val id: Long) : SealedCommand {
+class UpdateCommand(private val human: HumanBeing, private val id: Long) : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.update(id, humanBeing = human)

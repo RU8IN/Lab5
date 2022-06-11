@@ -15,7 +15,7 @@ import java.io.FileNotFoundException
 class LoadCommand(
     @SerialName("File Path")
     val filePath: String
-    ): SealedCommand {
+    ): SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         try {

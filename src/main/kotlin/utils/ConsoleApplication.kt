@@ -1,6 +1,8 @@
 package utils
 import commands.LoadCommand
 import storage.HumanCollectionInterface
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 
 
 class ConsoleApplication(
@@ -9,9 +11,6 @@ class ConsoleApplication(
     private val collection: HumanCollectionInterface,
     private val collectionPath: String? = null
 ) {
-
-    private val stardartIn = System.`in`
-
 
     fun run() {
         logger.log(PrintTypesEnum.INFO to "Ryan Gosling Maker 1.0")
@@ -23,6 +22,7 @@ class ConsoleApplication(
             try {
                 val currentCommand = parser.parse(readln())
                 logger.log(currentCommand.execute(collection))
+
             } catch (e: IllegalArgumentException) {
                 logger.log(PrintTypesEnum.WARNING to "Wrong argument type")
             } catch (e: RuntimeException) {

@@ -7,7 +7,7 @@ import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("filter_contains_soundtrack_name", "Filters collection by soundtrack name", "fcsn")
-class FilterContainsSoundtrackNameCommand(private val soundtrackName: String) : SealedCommand{
+class FilterContainsSoundtrackNameCommand(private val soundtrackName: String) : SealedCommand(){
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         val list = mutableListOf(Pair(PrintTypesEnum.INFO, "Collection filtered"))

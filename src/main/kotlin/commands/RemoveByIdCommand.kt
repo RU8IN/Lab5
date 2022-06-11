@@ -6,7 +6,7 @@ import utils.CommandAnnotation
 
 @kotlinx.serialization.Serializable
 @CommandAnnotation("remove_by_id", "Removes element by id", "rbi")
-class RemoveByIdCommand(private val id: Long) : SealedCommand {
+class RemoveByIdCommand(private val id: Long) : SealedCommand() {
 
     override fun execute(collection: HumanCollectionInterface): List<Pair<PrintTypesEnum, String>> {
         collection.removeById(id)
